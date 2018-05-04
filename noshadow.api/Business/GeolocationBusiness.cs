@@ -42,6 +42,7 @@ namespace noshadow.api.Business
                 DeviceId = device.Id,
                 Height = Convert.ToDouble(payload.Height),
                 Speed = Convert.ToDouble(payload.Speed),
+                //TODO: Converter do formato
                 Latitude = Convert.ToDouble(payload.Latitude),
                 Longitude = Convert.ToDouble(payload.Longitude),
                 LogDate = payload.LogDate
