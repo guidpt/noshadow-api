@@ -67,6 +67,12 @@ namespace noshadow.api
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "NoShadow API");
             });
+            
+            app.UseCors(builder => builder
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials());   
 
             app.UseMvc();
         }
