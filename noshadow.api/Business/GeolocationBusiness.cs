@@ -53,24 +53,35 @@ namespace noshadow.api.Business
 
         public async Task<List<GeolocationProxy>> Get(FilterPayload filter)
         {
-            var logs = _logRepository.GetAll().Include(i => i.Device).OrderBy(o => o.LogDate).Where(w => w.DeviceId == filter.DeviceId);
+            var logsEntity = _logRepository.GetAll().Include(i => i.Device).OrderBy(o => o.LogDate).Where(w => w.DeviceId == filter.DeviceId);
+            
+            
+            
 
             if (filter.Start.HasValue)
             {
-                logs = logs.Where(w => w.LogDate > filter.Start.Value);
+                logsEntity = logsEntity.Where(w => w.LogDate > filter.Start.Value);
             }
             
             if (filter.End.HasValue)
             {
-                logs = logs.Where(w => w.LogDate < filter.End.Value);
+                logsEntity = logsEntity.Where(w => w.LogDate < filter.End.Value);
+            }
+
+            var logs = new List<LogEntity>();
+            foreach (var entity in logsEntity)
+            {  
+                if (!logs.Any(f => f.Latitude == entity.Latitude && f.Longitude == entity.Longitude))
+                {
+                    logs.Add(entity);
+                }
             }
 
             return logs.Select(s => new GeolocationProxy()
             {
                 LogDate = s.LogDate,
-                Latitude = s.Latitude.ToString(),
-                Longitude = s.Longitude.ToString(),
-                
+                Latitude = s.Latitude,
+                Longitude = s.Longitude,
                 Speed = s.Speed.ToString(),
                 Height = s.Height.ToString(),
                 

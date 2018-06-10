@@ -19,6 +19,8 @@ namespace noshadow.api
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .UseKestrel()
+                .UseUrls("http://localhost:5070")
                 .UseStartup<Startup>()
                 .Build();
     }
